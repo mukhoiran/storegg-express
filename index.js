@@ -26,6 +26,18 @@ app.delete('/', function (req, res) {
   res.send('DELETE request to homepage')
 })
 
+// GET method route with params
+app.get('/users/:id', (req, res) => {
+  const id = req.params.id;
+  res.send(id)
+})
+
+// GET method route with query
+app.get('/user', (req, res) => {
+  const name = req.query.name;
+  res.send(name)
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

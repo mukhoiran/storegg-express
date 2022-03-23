@@ -7,19 +7,44 @@ async function main() {
   await mongoose.connect('mongodb://localhost:27017/storegg_db');
 }
 
-const carSchema = new mongoose.Schema({
-   name: String
+const userSchema = new mongoose.Schema({
+   name: String,
+   age: Number,
+   status: {
+      type: String,
+      enum: ['active', 'non active'],
+      default: 'non active'
+   }
 });
 
-const Car = mongoose.model('Car', carSchema);
+const User = mongoose.model('User', userSchema);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (){
+db.once('open', async () => {
    //we'are connected
-   const car = new Car({ name: 'Ferarri'});
-   car.save((err, result) => {
-      if(err) return console.log(err);
-      console.log(result);
-   })
+
+   //show all data from users
+   const users = await User.find();
+   console.log(users);
+
+   //show specific data from users
+   // const users = await User.find({ _id: '623a83cc8e93af2154fa35ce'});
+   // console.log(users);
+
+   //insert new user
+   // const newUser = await User.create({
+   //    name: 'Ginting',
+   //    age: 22,
+   //    status: 'active'
+   // })
+   // console.log(newUser);
+
+   //another method to insert user
+   // const newUser = new User();
+   // newUser.name = 'Kevin';
+   // newUser.age = 23;
+   // newUser.status = 'non active';
+   // const insert = await newUser.save();
+   // console.log(insert); 
 })

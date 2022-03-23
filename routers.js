@@ -8,15 +8,39 @@ const connection = require('./connection')
 //   next()
 // })
 
+//page for index
 router.get('/', (req, res) => {
    res.send('Hello World!')
 })
 
+//get data from storegg_db
 router.get('/users', async (req, res) => {
    try {
       const db = connection.db('storegg_db')
       const users = await db.collection('users').find().toArray()
       res.send({data: users})
+   } catch (error) {
+      res.send({message: error.message || 'internal server error'})  
+   }
+})
+
+//insert data into storegg_db
+router.post('/users', async (req, res) => {
+   try {
+      const { name, age, status } = req.body
+      const db = connection.db('storegg_db')
+      const users = await db.collection('users').insertOne({
+         name,
+         age,
+         status
+      });
+      // console.log("users >> ")
+      // console.log(users)
+      if(users.acknowledged){
+         res.send({message: 'Successfully added data'})
+      }else{
+         res.send({message: 'Failed adding data'})
+      }
    } catch (error) {
       res.send({message: error.message || 'internal server error'})  
    }

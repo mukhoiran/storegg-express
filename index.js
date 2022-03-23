@@ -8,8 +8,11 @@ const myLogger = function (req, res, next) {
   console.log('LOGGED')
   next()
 }
-
 app.use(myLogger)
+
+//Middleware for get value of POST with json body
+app.use(express.urlencoded({ extended: true}))
+app.use(express.json())
 
 app.use(routers)
 

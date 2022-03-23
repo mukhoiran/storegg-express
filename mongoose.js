@@ -8,7 +8,12 @@ async function main() {
 }
 
 const userSchema = new mongoose.Schema({
-   name: String,
+   // name: String,
+   name: {
+      type: String,
+      // required: true
+      required: [true, 'name is required']
+   },
    age: Number,
    status: {
       type: String,
@@ -25,8 +30,8 @@ db.once('open', async () => {
    //we'are connected
 
    //show all data from users
-   const users = await User.find();
-   console.log(users);
+   // const users = await User.find();
+   // console.log(users);
 
    //show specific data from users
    // const users = await User.find({ _id: '623a83cc8e93af2154fa35ce'});
@@ -47,4 +52,22 @@ db.once('open', async () => {
    // newUser.status = 'non active';
    // const insert = await newUser.save();
    // console.log(insert); 
+
+   //update data
+   // const updateUser = await User.updateOne({_id: '623a9b74872d430284bde64e'}, {name: 'Marcus'});
+   // console.log(updateUser);
+
+   //update data
+   // const updateUser = await User.findById('623a9b74872d430284bde64e');
+   // updateUser.name = 'Lee Ji Zia';
+   // const update = await updateUser.save();
+   // console.log(update);
+
+   //delete data
+   // const deleteUser = await User.deleteOne({_id: '623a9b74872d430284bde64e'})
+   // console.log(deleteUser);
+
+   //insert empty data
+   const newUser = await User.create({});
+   console.log(newUser);
 })
